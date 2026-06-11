@@ -1,14 +1,18 @@
+import subprocess
 import os
 
-print("Running ANCOM-BC differential abundance analysis...")
+def run_ancombc():
 
-cmd = """
-qiime composition ancombc \
---i-table table.qza \
---m-metadata-file sample-metadata.tsv \
---p-formula condition
-"""
+    print("Running ANCOM-BC...\n")
 
-os.system(cmd)
+    os.makedirs("results", exist_ok=True)
 
-print("ANCOM-BC completed.")
+    subprocess.run("""
+    qiime composition ancombc \
+    --i-table results/table.qza \
+    --m-metadata-file /mnt/d/COLON3/raw_data/dada2_out/sample-metadata.tsv \
+    --p-formula condition \
+    --o-differentials results/ancombc_differentials.qza
+    """, shell=True, check=True)
+
+    print("ANCOM-BC completed.\n")
