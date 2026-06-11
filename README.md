@@ -10,3 +10,14 @@ python run_pipeline.py
 
 All generated outputs are stored in the results/ directory, including feature tables, representative sequences, phylogenetic trees, taxonomy assignments, diversity metrics, ANCOM-BC results, and QIIME2 visualization files (.qzv).
 
+## Requirements
+
+- Python 3
+- QIIME2 (2025.10)
+- SILVA classifier (.qza)
+
+## Run
+
+```bash
+conda activate qiime2-amplicon-2025.10
+python run_pipeline.py
