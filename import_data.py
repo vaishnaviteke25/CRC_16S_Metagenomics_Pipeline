@@ -1,15 +1,24 @@
+import subprocess
 import os
 
-print("Starting QIIME2 import...")
+def import_data():
 
-cmd = """
-qiime tools import \
---type 'SampleData[PairedEndSequencesWithQuality]' \
---input-path manifest.tsv \
---output-path demux-paired.qza \
---input-format PairedEndFastqManifestPhred33V2
-"""
+    print("Importing sequences...\n")
 
-os.system(cmd)
+    os.makedirs("results", exist_ok=True)
 
-print("Import completed.")
+    subprocess.run("""
+    qiime tools import \
+    --type 'SampleData[PairedEndSequencesWithQuality]' \
+    --input-path ../manifest.tsv \
+    --output-path results/demux.qza \
+    --input-format PairedEndFastqManifestPhred33V2
+    """, shell=True, check=True)
+
+    subprocess.run("""
+    qiime demux summarize \
+    --i-data results/demux.qza \
+    --o-visualization results/demux.qzv
+    """, shell=True, check=True)
+
+    print("Import completed.\n")
