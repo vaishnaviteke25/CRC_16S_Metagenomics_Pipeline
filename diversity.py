@@ -1,16 +1,18 @@
+import subprocess
 import os
+from config import METADATA, SAMPLING_DEPTH
 
-print("Running diversity analysis...")
+def diversity_analysis():
 
-cmd = """
-qiime diversity core-metrics-phylogenetic \
---i-phylogeny rooted-tree.qza \
---i-table table.qza \
---p-sampling-depth 10000 \
---m-metadata-file sample-metadata.tsv \
---output-dir diversity-core-metrics-phylogenetic
-"""
+    print("Running diversity analysis...\n")
 
-os.system(cmd)
+    subprocess.run(f"""
+    qiime diversity core-metrics-phylogenetic \
+    --i-phylogeny results/rooted-tree.qza \
+    --i-table results/table.qza \
+    --p-sampling-depth {SAMPLING_DEPTH} \
+    --m-metadata-file {METADATA} \
+    --output-dir results/core-metrics-results
+    """, shell=True, check=True)
 
-print("Diversity analysis completed.")
+    print("Diversity analysis completed.\n")
