@@ -1,15 +1,21 @@
+import subprocess
 import os
 
-print("Importing paired-end FASTQ files into QIIME2...")
+def run_dada2():
 
-cmd = """
-qiime tools import \
---type 'SampleData[PairedEndSequencesWithQuality]' \
---input-path manifest.tsv \
---output-path demux-paired.qza \
---input-format PairedEndFastqManifestPhred33V2
-"""
+    print("Running DADA2 denoising...\n")
 
-os.system(cmd)
+    os.makedirs("results", exist_ok=True)
 
-print("Import completed.")
+    subprocess.run("""
+qiime dada2 denoise-paired \
+--i-demultiplexed-seqs results/demux.qza \
+--p-trunc-len-f 240 \
+--p-trunc-len-r 200 \
+--o-table results/table.qza \
+--o-representative-sequences results/rep-seqs.qza \
+--o-denoising-stats results/denoising-stats.qza \
+--o-base-transition-stats results/base-transition-stats.qza
+""", shell=True, check=True)
+
+    print("DADA2 completed.\n")
