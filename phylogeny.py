@@ -1,16 +1,19 @@
+import subprocess
 import os
 
-print("Building phylogenetic tree...")
+def generate_tree():
 
-cmd = """
-qiime phylogeny align-to-tree-mafft-fasttree \
---i-sequences rep-seqs.qza \
---o-alignment aligned-rep-seqs.qza \
---o-masked-alignment masked-aligned-rep-seqs.qza \
---o-tree unrooted-tree.qza \
---o-rooted-tree rooted-tree.qza
-"""
+    print("Generating phylogenetic tree...\n")
 
-os.system(cmd)
+    os.makedirs("results", exist_ok=True)
 
-print("Phylogenetic tree generated.")
+    subprocess.run("""
+    qiime phylogeny align-to-tree-mafft-fasttree \
+    --i-sequences results/rep-seqs.qza \
+    --o-alignment results/aligned-rep-seqs.qza \
+    --o-masked-alignment results/masked-aligned-rep-seqs.qza \
+    --o-tree results/unrooted-tree.qza \
+    --o-rooted-tree results/rooted-tree.qza
+    """, shell=True, check=True)
+
+    print("Phylogenetic tree completed.\n")
